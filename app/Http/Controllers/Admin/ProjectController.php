@@ -22,7 +22,7 @@ class ProjectController extends Controller
         $paymentMethods = PaymentMethod::get();
     	return view('admin.project.create',compact('paymentMethods'));
     }
-    public function store(Request $request)
+    public function store(Request $request,$projectId='')
     {
         //dd($request->all());
         // echo "<pre>";
@@ -51,14 +51,20 @@ class ProjectController extends Controller
                 $projectData = new Project();
             }
 
-        }else{
+        }
+        else if($projectId != '')
+        {
+            $projectData = Project::find($projectId);
+        }
+        else{
             $projectData = new Project();
         } 
+
         $projectData->title = $request->title;
         $projectData->short_description = $request->short_description;
         $projectData->detailed_description = $request->detailed_description;
         $projectData->payment_methods = $request->payment_methods_array;
-        $projectData->payment_methods_ids = NULL;
+        $projectData->status = (isset($request->status) && $request->status !='')?$request->status:'active';
         $projectData->total_raised = $request->total_raised;
         $projectData->max_raise = $request->max_raise;
         $projectData->website_url = $request->website_url;
@@ -216,7 +222,7 @@ class ProjectController extends Controller
     }
     public function deleteProject($id)
     {
-    	
+    	Project::find($id);
     }
 
     public function listCoin($value='')

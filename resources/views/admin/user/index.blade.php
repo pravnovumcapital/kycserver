@@ -28,7 +28,7 @@
         <td>{{$user->phone_number}}</td>
         <td>{{$user->status}}</td>
         <td>{{$user->created_at->format('d/m/Y')}}</td>
-        <td><a href="#"><span><i class="fa fa-edit text-blue"></i></span></a>
+        <td><a href="{{route('admin.users.edit',$user->id)}}"><span><i class="fa fa-edit text-blue"></i></span></a>
           <a href="#"><span><i class="fa fa-eye text-green"></i></span></a>
           <a href="#" onclick="deleteRecord('modal-danger','Delete this record?','Are you sure delete this record?','Delete','{{$user->id}}','{{route("admin.users.delete",$user->id)}}')"><span><i class="fa fa-trash-o text-red"></i></span></td></a>
       </tr>

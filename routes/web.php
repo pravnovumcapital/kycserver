@@ -43,11 +43,13 @@ Route::group(['prefix' => 'admin'], function () {
   Route::get('/users/verified/{count?}', 'Admin\UserController@userVerifiedList')->name('admin.users.verified');
   Route::get('/users/pending/{count?}', 'Admin\UserController@userPendingList')->name('admin.users.pending');
   Route::post('/users/delete/{id}', 'Admin\UserController@deleteUser')->name('admin.users.delete');
+  Route::get('/user/edit/{id}', 'Admin\UserController@edit')->name('admin.users.edit');
+  Route::post('/user/edit/{id}', 'Admin\UserController@update')->name('admin.users.update');
 
   //project
   Route::get('/project/create', 'Admin\ProjectController@create')->name('admin.project.create');
   Route::post('/project/create', 'Admin\ProjectController@store')->name('admin.project.store');
-  Route::post('/project/update', 'Admin\ProjectController@update')->name('admin.project.update');
+  Route::post('/project/update/{id}', 'Admin\ProjectController@store')->name('admin.project.update');
   Route::get('/project/lists', 'Admin\ProjectController@listProjects')->name('admin.project.list');
   Route::get('/project/edit/{id}', 'Admin\ProjectController@edit')->name('admin.project.edit');
   Route::post('/project/delete/{id}', 'Admin\ProjectController@deleteProject')->name('admin.project.delete');

@@ -10,6 +10,6 @@ class ProjectPaymentMethod extends Model
 
     public function bank()
     {
-        return $this->hasOne('App\ProjectBankDetails','payment_method_id','project_bank_detail_id');
+        return $this->hasOne('App\ProjectBankDetails','id','project_bank_detail_id');
     }
 }

@@ -40,12 +40,17 @@ class User extends Authenticatable
                     $file=Storage::url($this->id.'/avatar/'.$avatar->file_name.'?').str_random(10);
                     return url($file);
                 } else {
-                    //$file='images/profilePhoto.png';
+                    $file='images/no-image-available.png';
+                    return url($file);
                     return NULL;
                 }
             }
         }
-        return NULL;
+        else{
+            $file='images/no-image-available.png';
+            return url($file);
+        }
+        //return NULL;
     }
     public function getPassportPhotoAttribute($value)
     {
@@ -58,10 +63,15 @@ class User extends Authenticatable
                     $file=Storage::url($this->id.'/passport/'.$avatar->file_name.'?').str_random(10);
                     return url($file);
                 } else {
-                    //$file='images/profilePhoto.png';
+                    $file='images/no-image-available.png';
+                    return url($file);
                     return NULL;
                 }
             }
+        }
+        else{
+            $file='images/no-image-available.png';
+            return url($file);
         }
         return NULL;
     }

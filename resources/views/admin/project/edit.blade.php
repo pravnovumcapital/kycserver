@@ -8,7 +8,7 @@
       <!-- /.box-header -->
       <!-- form start -->
       <!-- <form role="form" action="{{route('admin.project.store')}}" method="POST" enctype="multipart/form-data" id="project_form"> -->
-      <form role="form"  enctype="multipart/form-data" id="project_form" data-action="{{route('admin.project.update')}}">
+      <form role="form"  enctype="multipart/form-data" id="project_form" data-action="{{route('admin.project.update',$project->id)}}">
       
         {{csrf_field()}}
               <div class="box-body">
@@ -19,21 +19,21 @@
                 </div>
                 <div class="form-group">
                   <label>Short Description</label>
-                  <textarea class="form-control" rows="2" placeholder="Enter short description about this project!" name="short_description" id="project_short_desc" required="">{{$project->short_description}}</textarea>
+                  <textarea class="form-control" rows="3" placeholder="Enter short description about this project!" name="short_description" id="project_short_desc" required="">{{$project->short_description}}</textarea>
                 </div>
                  <div class="form-group">
                   <label>Detailed Description</label>
-                  <textarea class="form-control" rows="4" placeholder="Enter detailed description about this project!" name="detailed_description" id="project_detailed_desc" required="">{{$project->detailed_description}}</textarea>
+                  <textarea class="form-control" rows="6" placeholder="Enter detailed description about this project!" name="detailed_description" id="project_detailed_desc" required="">{{$project->detailed_description}}</textarea>
                 </div>
                 <div class="form-group">
-                  <div class="preview" style="width:100px;"><img src="{{$project->logo('thumb')}}"></img></div>
+                  <div class="preview" style="width:100px;"><img width="100" height="100" src="{{$project->logo('thumb')}}"></img></div>
                   <label for="project_thumb_logo">Logo Thumbnail</label>
                   <input type="file" name="thumbnail_logo" id="project_thumb_logo">
 
                   <p class="help-block">Please upload 200 X 200 pixels</p>
                 </div>
                 <div class="form-group">
-                <div class="preview" style="width:100px;"><img src="{{$project->logo()}}"></img></div>
+                <div class="preview" style="width:100px;"><img width="100" height="100" src="{{$project->logo()}}"></img></div>
                   <label for="project_logo">Logo</label>
                   <input type="file" name="logo" id="project_logo">
 
@@ -72,7 +72,7 @@
                   <div class="payment-mode-content">
                     <div class="form-group">
                       <label>Select payment mode</label>
-                      <select class="form-control" onchange="addPaymentMode(this)" required>
+                      <select class="form-control" onchange="addPaymentMode(this)">
                         <option value="">Select a payment mode</option>
                         @foreach($paymentMethods as $key=>$method)
                         <option value="{{$method->id}}" data-name="{{$method->name}}">{{$method->name}}</option>
@@ -82,6 +82,7 @@
                     </div>
                     <div class="payment-mode-append-div">
                       @foreach($project->getPaymentModes as $key=>$paymentMethod)
+                      
                       @if($paymentMethod->type == "coin")
                       <div class="coin_details appending-box">
                         <span class="pull-right remove-coin-btn" onclick="removePaymentType('coin_details',this,{{$paymentMethod->method_id}})"><i class="fa fa-2x fa-minus-circle red-icon"></i></span>
@@ -140,17 +141,17 @@
 
                  <div class="form-group">
                   <label for="exampleInputEmail1">Total Raised</label>
-                  <input type="number" class="form-control" id="total_raised" placeholder="Enter total raised " name="total_raised" required="">
+                  <input type="number" class="form-control" id="total_raised" placeholder="Enter total raised " name="total_raised" required="" value="{{$project->total_raised}}">
                 </div>
                 <div class="form-group">
                   <label for="exampleInputEmail1">Max Raise</label>
-                  <input type="number" class="form-control" id="project_title" placeholder="Enter max raise" name="max_raise" required="">
+                  <input type="number" class="form-control" id="project_title" placeholder="Enter max raise" name="max_raise" required="" value="{{$project->max_raise}}">
                 </div>
                   <div class="form-group">
                   <label for="exampleInputEmail1">Website URL</label>
                   <div class="input-group">
                     <span class="input-group-addon"><i class="fa fa-safari"></i></span>
-                    <input type="url" class="form-control" placeholder="Enter website url" name="website_url">
+                    <input type="url" class="form-control" placeholder="Enter website url" name="website_url" value="{{$project->website_url}}"> 
                   </div>
                 </div>
 
@@ -158,7 +159,7 @@
                   <label for="exampleInputEmail1">Contact Email</label>
                   <div class="input-group">
                     <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
-                    <input type="email" class="form-control" placeholder="Enter contact email" name="contact_email">
+                    <input type="email" class="form-control" placeholder="Enter contact email" name="contact_email" value="{{$project->contact_email}}">
                   </div>
                 </div>
               </div> 
@@ -348,6 +349,7 @@
                 $(".se-pre-con").show();
             },
             success: function(result){
+              window.scrollTo(0,0);
               $(".se-pre-con").fadeOut("slow");
               $(".submitBtn").removeAttr("disabled");
               console.log(result);
@@ -355,8 +357,10 @@
                 if(result.code == 200){
                     $('#project_form')[0].reset();
                     $('.message_div').html('<div class="alert alert-success">'+result.message+'</div> ');
-                    setTimeout(function(){ location.reload(); }, 5000);
+                    location.reload();
+                    //setTimeout(function(){ location.reload(); }, 5000);
                 }else{
+                    //window.scrollTo(0,0);
                     $('.message_div').html('<div class="alert alert-danger">'+result.message+'</div> ');
                     //$('.statusMsg').html('<span style="font-size:18px;color:#EA4335">Some problem occurred, please try again.</span>');
                 }
@@ -365,6 +369,7 @@
             error:function(result)
             {
               console.log(result);
+                window.scrollTo(0,0);
                 $(".se-pre-con").fadeOut("slow");
                 $(".submitBtn").removeAttr("disabled");
                 $('.message_div').html('<div class="alert alert-danger">'+result.message+'</div> ');
@@ -396,6 +401,9 @@
     padding: 10px;
     border: 1px solid #ccc;
     margin: 10px;
+  }
+  .payment-mode-append-div{
+    padding-bottom:12px;
   }
 </style>
 @endsection
